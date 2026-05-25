@@ -67,7 +67,7 @@ const Dashboard = () => {
           s.status === "band" ? { ...s, vaqt: (s.vaqt || 0) + 1 } : s,
         ),
       );
-    }, 1);
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
 
