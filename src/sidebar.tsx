@@ -1,8 +1,7 @@
 import { Drawer } from "vaul";
 import {
   LayoutDashboard,
-  Table2,
-  BarChart3,
+
   FileText,
   Menu,
 } from "lucide-react";
@@ -46,49 +45,6 @@ const Sidebar = () => {
                 Asosiy panel
               </span>
             </button>
-          </Link>
-        </Drawer.Close>
-
-        {/* 2. Stollar */}
-        <Drawer.Close asChild>
-          <Link to={"/stollar"}>
-          <button className={`${baseStyle} ${inactiveStyle}`}>
-            <Table2
-              size={20}
-              className="group-hover:scale-110 transition-transform"
-            />
-            <span className="text-[13px] font-bold tracking-wide">Stollar</span>
-          </button>
-          </Link>
-        </Drawer.Close>
-
-        {/* 3. Statistika */}
-        <Drawer.Close asChild>
-          <Link to={"/statistika"}>
-          <button className={`${baseStyle} ${inactiveStyle}`}>
-            <BarChart3
-              size={20}
-              className="group-hover:scale-110 transition-transform"
-            />
-            <span className="text-[13px] font-bold tracking-wide">
-              Statistika
-            </span>
-          </button>
-          </Link>
-        </Drawer.Close>
-
-        {/* 4. Hisobotlar */}
-        <Drawer.Close asChild>
-          <Link to={"/hisobot"}>
-          <button className={`${baseStyle} ${inactiveStyle}`}>
-            <FileText
-              size={20}
-              className="group-hover:scale-110 transition-transform"
-            />
-            <span className="text-[13px] font-bold tracking-wide">
-              Hisobotlar
-            </span>
-          </button>
           </Link>
         </Drawer.Close>
 
