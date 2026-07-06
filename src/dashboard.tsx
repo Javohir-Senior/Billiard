@@ -197,11 +197,11 @@ const Dashboard = () => {
         </div>
 
         <div className="flex flex-col xl:flex-row gap-6">
-          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 content-start">
             {stollar.map((s) => (
               <div
                 key={s.id}
-                className="bg-[#121826] rounded-2xl p-5 border border-gray-800"
+                className="bg-[#121826] rounded-2xl p-5 border border-gray-800 flex flex-col justify-between h-55"
               >
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-white font-bold text-xs">
@@ -249,68 +249,72 @@ const Dashboard = () => {
             ))}
           </div>
 
-          <aside className="w-85 bg-[#111] p-4 rounded-xl border border-gray-800 overflow-y-auto">
+          <aside className="w-full xl:w-96 shrink-0 h-150 bg-[#111] p-4 rounded-xl border border-gray-800 overflow-y-auto">
             <h2 className="font-bold text-white mb-4 flex items-center gap-2">
               <ReceiptText size={18} /> Cheklar
             </h2>
-            {cheklar.map((c) => (
-              <div
-                key={c.id}
-                className="bg-white text-black p-5 rounded-sm shadow-xl mb-6 w-72 mx-auto font-mono text-sm border-t-4 border-black"
-              >
-                <div className="text-center border-b border-dashed border-gray-400 pb-3 mb-3">
-                  <h2 className="font-bold text-lg">BILLIARD CLUB</h2>
-                  <p className="text-xs text-gray-600">
-                    Stol: #{c.stolId?.slice(-3)}
-                  </p>
-                </div>
 
-                {/* Vaqt ma'lumotlari */}
-                <div className="text-xs mb-3 space-y-1">
-                  <div className="flex justify-between">
-                    <span>Boshlandi:</span> <b>{c.start}</b>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Tugadi:</span> <b>{c.end}</b>
-                  </div>
-                  <div className="flex justify-between border-b border-dashed border-gray-400 pb-2">
-                    <span>Davomiyligi:</span> <b>{c.minutes} daqiqa</b>
-                  </div>
-                </div>
-
-                {/* Xizmatlar ro'yxati */}
-                <div className="space-y-2 mb-3">
-                  <div className="flex justify-between">
-                    <span>Stol soati:</span>
-                    <span>{c.timeSum.toLocaleString()}</span>
-                  </div>
-                  {c.bar.map((b: any, idx: number) => (
-                    <div key={idx} className="flex justify-between italic">
-                      <span>
-                        {b.nomi} x{b.soni}
-                      </span>
-                      <span>{(b.narxi * b.soni).toLocaleString()}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Jami va chiziq */}
-                <div className="border-t-2 border-black pt-2 flex justify-between font-bold text-base">
-                  <span>JAMI:</span>
-                  <span>{c.jami.toLocaleString()} so'm</span>
-                </div>
-
-                <button
-                  onClick={() => {
-                    setKassa((k) => k + c.jami);
-                    setCheklar((p) => p.filter((x) => x.id !== c.id));
-                  }}
-                  className="w-full bg-black text-white mt-4 py-2 font-bold hover:bg-gray-800 transition-colors"
+            <div className="flex flex-col gap-4 items-center">
+              {cheklar.map((c) => (
+                <div
+                  key={c.id}
+                  className="bg-white text-black p-5 rounded-sm shadow-xl w-full max-w-[288px] font-mono text-sm border-t-4 border-black"
                 >
-                  TO'LASH
-                </button>
-              </div>
-            ))}
+                  {/* Chek ichidagi kontent */}
+                  <div className="text-center border-b border-dashed border-gray-400 pb-3 mb-3">
+                    <h2 className="font-bold text-lg">BILLIARD CLUB</h2>
+                    <p className="text-xs text-gray-600">
+                      Stol: #{c.stolId ? c.stolId.slice(-3) : "---"}
+                    </p>
+                  </div>
+
+                  {/* Vaqt ma'lumotlari */}
+                  <div className="text-xs mb-3 space-y-1">
+                    <div className="flex justify-between">
+                      <span>Boshlandi:</span> <b>{c.start}</b>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Tugadi:</span> <b>{c.end}</b>
+                    </div>
+                    <div className="flex justify-between border-b border-dashed border-gray-400 pb-2">
+                      <span>Davomiyligi:</span> <b>{c.minutes} daqiqa</b>
+                    </div>
+                  </div>
+
+                  {/* Xizmatlar ro'yxati */}
+                  <div className="space-y-2 mb-3">
+                    <div className="flex justify-between">
+                      <span>Stol soati:</span>
+                      <span>{c.timeSum.toLocaleString()}</span>
+                    </div>
+                    {c.bar.map((b: any, idx: number) => (
+                      <div key={idx} className="flex justify-between italic">
+                        <span>
+                          {b.nomi} x{b.soni}
+                        </span>
+                        <span>{(b.narxi * b.soni).toLocaleString()}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Jami va chiziq */}
+                  <div className="border-t-2 border-black pt-2 flex justify-between font-bold text-base">
+                    <span>JAMI:</span>
+                    <span>{c.jami.toLocaleString()} so'm</span>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      setKassa((k) => k + c.jami);
+                      setCheklar((p) => p.filter((x) => x.id !== c.id));
+                    }}
+                    className="w-full bg-black text-white mt-4 py-2 font-bold hover:bg-gray-800 transition-colors"
+                  >
+                    TO'LASH
+                  </button>
+                </div>
+              ))}
+            </div>
           </aside>
         </div>
       </main>
@@ -320,28 +324,61 @@ const Dashboard = () => {
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
           <div className="bg-[#121826] w-full max-w-xs rounded-3xl p-6 border border-gray-800">
             <div className="flex justify-between mb-4">
-              <span className="text-white">Bar xizmati</span>
-              <X onClick={() => setModal({ ochiq: false, stolId: null })} />
+              <span className="text-white font-bold">Bar xizmati</span>
+              <X
+                className="cursor-pointer"
+                onClick={() => setModal({ ochiq: false, stolId: null })}
+              />
             </div>
-            {menyu.map((m) => (
-              <div
-                key={m.id}
-                className="flex justify-between items-center mb-3 p-2 bg-black/20 rounded-lg"
-              >
-                <span className="text-xs text-white">{m.nomi}</span>
-                <div className="flex items-center gap-3">
-                  <button onClick={() => barHarakat(modal.stolId!, m, "minus")}>
-                    <Minus size={14} />
-                  </button>
-                  <button onClick={() => barHarakat(modal.stolId!, m, "plus")}>
-                    <Plus size={14} className="bg-amber-500 rounded" />
-                  </button>
-                </div>
-              </div>
-            ))}
+
+            {/* Joriy stolni topib olish */}
+            {(() => {
+              const activeStol = stollar.find((s) => s.id === modal.stolId);
+
+              return menyu.map((m) => {
+                // Shu mahsulotdan stol barida nechtaligini topish
+                const barItem = activeStol?.bar.find((b) => b.id === m.id);
+                const soni = barItem ? barItem.soni : 0;
+
+                return (
+                  <div
+                    key={m.id}
+                    className="flex justify-between items-center mb-3 p-2 bg-black/20 rounded-lg"
+                  >
+                    <div className="flex flex-col">
+                      <span className="text-xs text-white">{m.nomi}</span>
+                      <span className="text-[10px] text-gray-500">
+                        {m.narxi.toLocaleString()} so'm
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={() => barHarakat(modal.stolId!, m, "minus")}
+                        className="p-1 hover:bg-gray-700 rounded"
+                      >
+                        <Minus size={14} />
+                      </button>
+
+                      <span className="text-white font-bold w-4 text-center">
+                        {soni}
+                      </span>
+
+                      <button
+                        onClick={() => barHarakat(modal.stolId!, m, "plus")}
+                        className="p-1 hover:bg-amber-600 bg-amber-500 rounded"
+                      >
+                        <Plus size={14} className="text-white" />
+                      </button>
+                    </div>
+                  </div>
+                );
+              });
+            })()}
+
             <button
               onClick={() => setModal({ ochiq: false, stolId: null })}
-              className="w-full mt-4 bg-blue-600 py-3 rounded-xl"
+              className="w-full mt-4 bg-blue-600 text-white py-3 rounded-xl font-bold"
             >
               Saqlash
             </button>
