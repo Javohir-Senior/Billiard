@@ -322,65 +322,85 @@ const Dashboard = () => {
       {/* Modal - Mobil uchun markazlashtirilgan */}
       {modal.ochiq && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
-          <div className="bg-[#121826] w-full max-w-xs rounded-3xl p-6 border border-gray-800">
-            <div className="flex justify-between mb-4">
-              <span className="text-white font-bold">Bar xizmati</span>
+          <div className="bg-[#121826] w-full max-w-sm rounded-3xl p-6 border border-gray-800 max-h-[80vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <span className="text-white font-bold">
+                Bar xizmati (Stol #{modal.stolId})
+              </span>
               <X
-                className="cursor-pointer"
+                className="cursor-pointer text-gray-400"
                 onClick={() => setModal({ ochiq: false, stolId: null })}
               />
             </div>
 
-            {/* Joriy stolni topib olish */}
-            {(() => {
+            {/* Menyu ro'yxati */}
+            {menyu.map((m) => {
               const activeStol = stollar.find((s) => s.id === modal.stolId);
 
-              return menyu.map((m) => {
-                // Shu mahsulotdan stol barida nechtaligini topish
-                const barItem = activeStol?.bar.find((b) => b.id === m.id);
-                const soni = barItem ? barItem.soni : 0;
+              return (
+                <div
+                  key={m.id}
+                  className="mb-6 p-3 bg-black/20 rounded-xl border border-gray-700/30"
+                >
+                  <h3 className="text-white font-bold text-sm mb-2">
+                    {m.nomi}
+                  </h3>
 
-                return (
-                  <div
-                    key={m.id}
-                    className="flex justify-between items-center mb-3 p-2 bg-black/20 rounded-lg"
-                  >
-                    <div className="flex flex-col">
-                      <span className="text-xs text-white">{m.nomi}</span>
-                      <span className="text-[10px] text-gray-500">
-                        {m.narxi.toLocaleString()} so'm
-                      </span>
-                    </div>
+                  {/* Har bir variantni map qilish */}
+                  {m.variantlar.map((v: any, idx: number) => {
+                    // Stol baridan shu mahsulotning aynan shu variantini topish
+                    const barItem = activeStol?.bar.find(
+                      (b: any) => b.id === m.id && b.olcham === v.olcham,
+                    );
+                    const soni = barItem ? barItem.soni : 0;
 
-                    <div className="flex items-center gap-3">
-                      <button
-                        onClick={() => barHarakat(modal.stolId!, m, "minus")}
-                        className="p-1 hover:bg-gray-700 rounded"
+                    return (
+                      <div
+                        key={idx}
+                        className="flex justify-between items-center py-1.5"
                       >
-                        <Minus size={14} />
-                      </button>
+                        <div className="flex flex-col">
+                          <span className="text-[10px] text-gray-400">
+                            {v.olcham}
+                          </span>
+                          <span className="text-[11px] text-emerald-500 font-medium">
+                            {v.narxi.toLocaleString()} s.
+                          </span>
+                        </div>
 
-                      <span className="text-white font-bold w-4 text-center">
-                        {soni}
-                      </span>
-
-                      <button
-                        onClick={() => barHarakat(modal.stolId!, m, "plus")}
-                        className="p-1 hover:bg-amber-600 bg-amber-500 rounded"
-                      >
-                        <Plus size={14} className="text-white" />
-                      </button>
-                    </div>
-                  </div>
-                );
-              });
-            })()}
+                        <div className="flex items-center gap-3">
+                          <button
+                            onClick={() =>
+                              barHarakat(modal.stolId!, { ...m, ...v }, "minus")
+                            }
+                            className="p-1 hover:bg-gray-700 rounded text-gray-400"
+                          >
+                            <Minus size={14} />
+                          </button>
+                          <span className="text-white font-bold w-5 text-center">
+                            {soni}
+                          </span>
+                          <button
+                            onClick={() =>
+                              barHarakat(modal.stolId!, { ...m, ...v }, "plus")
+                            }
+                            className="p-1 hover:bg-amber-600 bg-amber-500 rounded text-white"
+                          >
+                            <Plus size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })}
 
             <button
               onClick={() => setModal({ ochiq: false, stolId: null })}
-              className="w-full mt-4 bg-blue-600 text-white py-3 rounded-xl font-bold"
+              className="w-full mt-2 bg-blue-600 text-white py-3 rounded-xl font-bold"
             >
-              Saqlash
+              Yopish
             </button>
           </div>
         </div>
