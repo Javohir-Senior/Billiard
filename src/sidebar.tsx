@@ -1,21 +1,24 @@
 import { Drawer } from "vaul";
-import {
-  LayoutDashboard,
-
-  FileText,
-  Menu,
-} from "lucide-react";
-
-import { Link } from "react-router-dom";
+import { LayoutDashboard, FileText, Menu } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 const Sidebar = () => {
-  // Takrorlanuvchi stilni o'zgaruvchiga olib qo'yamiz (kodni toza saqlash uchun)
+  const location = useLocation();
+
   const baseStyle =
     "w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl transition-all duration-200 group border";
-  const activeStyle =
-    "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
-  const inactiveStyle =
-    "text-gray-500 hover:bg-gray-800/40 hover:text-gray-200 border-transparent";
+  
+  // Faol sahifa uchun stil
+  const activeStyle = "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
+  // Faol bo'lmagan sahifa uchun stil
+  const inactiveStyle = "text-gray-500 hover:bg-gray-800/40 hover:text-gray-200 border-transparent";
+
+  // Tugma uslubini dinamik qaytaruvchi yordamchi funksiya
+  const getButtonStyle = (path: string) => {
+    return location.pathname === path 
+      ? `${baseStyle} ${activeStyle}` 
+      : `${baseStyle} ${inactiveStyle}`;
+  };
 
   return (
     <div className="flex flex-col h-full py-7 px-4 bg-[#0d1117]">
@@ -34,31 +37,29 @@ const Sidebar = () => {
         </div>
       </div>
 
-      {/* Menyu bo'limlari - Endi MAP-siz, alohida */}
+      {/* Menyu */}
       <nav className="flex-1 space-y-2">
-        {/* 1. Asosiy panel */}
         <Drawer.Close asChild>
           <Link to={"/"}>
-            <button className={`${baseStyle} ${activeStyle}`}>
-              <LayoutDashboard size={20} className="text-emerald-400" />
-              <span className="text-[13px] font-bold tracking-wide">
-                Asosiy panel
-              </span>
+            <button className={getButtonStyle("/")}>
+              <LayoutDashboard 
+                size={20} 
+                className={location.pathname === "/" ? "text-emerald-400" : "text-gray-500"} 
+              />
+              <span className="text-[13px] font-bold tracking-wide">Asosiy panel</span>
             </button>
           </Link>
         </Drawer.Close>
 
         <Drawer.Close asChild>
           <Link to={"/admin"}>
-          <button className={`${baseStyle} ${inactiveStyle}`}>
-            <FileText
-              size={20}
-              className="group-hover:scale-110 transition-transform"
-            />
-            <span className="text-[13px] font-bold tracking-wide">
-              Admin
-            </span>
-          </button>
+            <button className={getButtonStyle("/admin")}>
+              <FileText 
+                size={20} 
+                className={location.pathname === "/admin" ? "text-emerald-400" : "text-gray-500"} 
+              />
+              <span className="text-[13px] font-bold tracking-wide">Admin</span>
+            </button>
           </Link>
         </Drawer.Close>
       </nav>
